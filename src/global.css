@@ -1,0 +1,170 @@
+*{
+    outline: none !important;
+}
+:root{
+    --primary:#0CB3E0;
+    --secundary:#1F9056;
+    --dark:#000000;
+    --white:#fff;
+    --gray:#E5E5E5;
+
+}
+#root{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}
+
+body{
+    background-color:#fff;
+}
+
+a, a:hover{
+    text-decoration: none !important;
+    color:inherit;
+}
+
+header {
+    background-color: var(--primary);
+}
+
+header > div {
+    cursor:pointer;
+    transition:0.5s;
+    padding:10px 20px;
+    text-align: right;
+   
+}
+
+header > div:houver{
+    background-color: rgba(0,0,0, 0.2);
+    transition: 0.5s;
+}
+header img{
+    width: 50px;
+    border-radius: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+header span:not(.mdi){
+    margin-bottom: -10px;
+    margin-top:2px
+}
+
+header small {
+    display: block;
+    margin-top: -20px
+}
+
+sidebar{
+    background-color: var(--gray);
+  
+}
+sidebar img{
+    padding: 2em 4em;
+}
+
+sidebar ul li{
+    list-style: none;
+    width: 100%;
+}
+
+sidebar ul li a{
+    width: 100%;
+    list-style: none;
+    color:var(--dark);
+    opacity:0.9;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+     margin:2.5px 0;
+     transition: 0.5s;
+     border-radius: 5px;
+}
+
+sidebar ul li a.active{
+    opacity: 1;
+    background-color: rgba(0,0,0,0.6)
+}
+
+sidebar ul li a.active svg{
+    color:var(--secundary);
+    
+    
+}
+sidebar ul li a svg{
+   font-size:20px;
+   margin: 0 10px;
+
+    
+}
+sidebar ul li a text{
+    font-size: 16px;
+}
+
+sidebar ul li a:visited,
+sidebar ul li a:focus {
+    color:var(--dark);
+  text-decoration: none !important;
+}
+
+siderbar ul li a:houver{
+    opacity: 1;
+    background-color: rgba(0,0,0,0.6)
+}
+
+.logo-mobile{
+    max-height: 70px;
+}
+
+.menu-mobile .MuiListItemText-primary{
+    font-weight: 600;
+    color:#444;
+
+}
+.menu-mobile svg{
+    font-size: 24px;
+    color:#444;
+}
+
+.label-custom{
+    color:#2c2c31;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0.5em 0;
+}
+
+.card{
+    background-color:rgb(255,255,255);
+    box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 4px 0px;
+    border-radius: 3px;
+    border:none;
+}
+
+.tips{
+    position:sticky;
+    top:20px;
+}
+.btn-save{
+    position: fixed;
+    bottom:30px;
+}
+
+
+.MuiMenuItem-root{
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+    font-weight: 500 !important;
+
+}
+
+.tabelaPagination .MuiInputBase-fullWidth{
+    width: 10% !important;
+}
+
+.pdf-container-grid{
+    display: grid;
+    grid-column-gap: 50px;
+}
