@@ -8,6 +8,7 @@ export const actionTypes  = {
     CHANGE:"EQUIPAMENTO_CHANGE",
     ERROR:"EQUIPAMENTO_ERROR",
     SUCCESS:"EQUIPAMENTO_SUCCESS",
+    SHOW:'EQUIPAMENTO_SHOW',
 }
 
 
@@ -32,10 +33,20 @@ export const indexResponse = (payload) => ({
     payload
 })
 
+export const showResponse =(payload) => ({
+    type: actionTypes.SHOW,
+    payload,
+})
+
 
 export const index = (id) => dispatch => {
     return HttpAuth.get('/registration/index/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(indexResponse({inscricaos:[res.data]})))
+}
+
+export const show = (id) => dispatch => {
+    return HttpAuth.get('/equipamento/'+id)
+    .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
 }
 
 
@@ -46,7 +57,7 @@ export const store = (data) => dispatch =>{
         msg:'Cadastrando Inscricao'
     }))
   
-    return HttpAuth.post('/registration/'+data.responsavel_id, data)
+    return HttpAuth.post('/equipamento/', data)
     .then(res =>{
        
         dispatch(changeLoading({open:false}) );
@@ -58,13 +69,40 @@ export const store = (data) => dispatch =>{
 
          if(res.status === 201){
              dispatch(success(true));
-             dispatch(changeNotify({open:true,msg:'Cadastrado com sucesso'}));
+             dispatch(changeNotify({open:true,msg:res.data.msg}));
             
          }
         }
    })
 
 }
+
+
+export const update = (data) => dispatch =>{
+    dispatch(changeLoading({
+        open:true,
+        msg:'Atualizando Equipamento'
+    }))
+
+    return HttpAuth.put('/equipamento/'+data.id,data)
+           .then(res =>{
+              
+                 dispatch(changeLoading({open:false}) );
+                 if(typeof res !== 'undefined'){
+                      if(res.data.error){
+                          dispatch(success(false));
+                          dispatch(error(res.data.error));
+                      }
+
+                      if(res.status === 201){
+                          dispatch(success(true));
+                          dispatch(changeNotify({open:true,msg:res.data.msg}));
+                         
+                      }
+                 }
+           })
+}
+
 
 
 

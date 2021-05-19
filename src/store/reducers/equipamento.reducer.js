@@ -22,6 +22,9 @@ export default (state = initialState, { type, payload }) => {
       
         return { ...state, ...payload }
 
+    case actionTypes.SHOW:
+      
+        return { ...state, ...payload }
       
     case actionTypes.CHANGE:
         return{ 
