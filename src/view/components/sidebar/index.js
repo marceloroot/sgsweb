@@ -20,13 +20,13 @@ const Sidebar = (props) =>{
                    </Link>
                </li>
                <li>
-               <Link to="/login">
+               <Link to="/equipamentos" className={props.location.pathname === '/equipamentos' ? 'active' :''}>
                    <FaHotel />
                    <text>Entidade</text>
                    </Link>
                </li>
                <li>
-               <Link to="/login">
+               <Link to="/beneficios" className={props.location.pathname === '/beneficios' ? 'active' :''}>
                    <FaHandHoldingUsd />
                    <text>Beneficio</text>
                    </Link>

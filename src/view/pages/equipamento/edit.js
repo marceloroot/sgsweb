@@ -58,12 +58,16 @@ const Equipamento = (props) =>{
         if(equipamento_id){
            
             dispatch(show(equipamento_id)).then(res =>{
-               
                 if(res){
+                    if(res.payload.equipamento === null) {
+                       
+                        window.location.replace('/equipamento');
+                    };
                     setState({...state,isLoading:false});
                    
                   
                 }
+               
 
             })
             
@@ -81,7 +85,7 @@ const Equipamento = (props) =>{
        
         <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/login`} />}
+            {(data.success) && <Redirect to={`/equipamentos`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">

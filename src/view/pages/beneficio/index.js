@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/equipamento.action'
+import {index} from '../../../store/actions/beneficio.action'
 
 
 
@@ -27,7 +27,7 @@ import {useSelector,useDispatch} from 'react-redux';
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
   { id: 'nome', label: 'Nome', minWidth: 200 },
-  { id: 'responsavel', label: 'Responsavel', minWidth: 200 },
+  { id: 'categoria', label: 'Categoria', minWidth: 200 },
   {
     id: 'editar',
     label: 'Editar',
@@ -39,15 +39,15 @@ const columns = [
 
 ];
 
-function createData(codigo,nome,responsavel,editar) {
+function createData(codigo,nome,categoria,editar) {
   const density =  10;
-  return { codigo, nome,responsavel,editar };
+  return { codigo, nome,categoria,editar };
 }
 
 
 const editIcon = (id) => (
   
-  <Link to={`/equipamento/${id}`} className="mr-2">
+  <Link to={`/beneficio/${id}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
   </IconButton>
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Equipamentos = (props) =>{
+const Beneficios = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -89,7 +89,7 @@ const Equipamentos = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.equipamentoReducers.equipamentos);
+    const data = useSelector(state => state.beneficioReducers.beneficios);
 
 
     React.useEffect(()=>{
@@ -122,7 +122,7 @@ const Equipamentos = (props) =>{
         <>
           <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/login`} />}
+            {(data.success) && <Redirect to={`/beneficios`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
@@ -132,7 +132,7 @@ const Equipamentos = (props) =>{
                          <>
                         {/*Botão Nove*/}
                         <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/equipamento">
+                                <Link to="/beneficio">
                                         <Button  variant="contained"  color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
                                                 <strong>NOVO</strong>
@@ -178,7 +178,7 @@ const Equipamentos = (props) =>{
                                     const dados ={  
                                             codigo:row.id,
                                             nome:row.nome,
-                                            responsavel:row.responsavel,
+                                            categoria:row.responsavel,
                                             editar:editIcon(row.id),
                                         
                                             
@@ -230,4 +230,4 @@ const Equipamentos = (props) =>{
     )
 }
 
-export default Equipamentos;
+export default Beneficios;

@@ -4,11 +4,11 @@ import { changeLoading } from './loading.action'
 import { changeNotify } from './notify.action'
 import axios from 'axios';
 export const actionTypes  = {
-    INDEX:"EQUIPAMENTO_INDEX",
-    CHANGE:"EQUIPAMENTO_CHANGE",
-    ERROR:"EQUIPAMENTO_ERROR",
-    SUCCESS:"EQUIPAMENTO_SUCCESS",
-    SHOW:'EQUIPAMENTO_SHOW',
+    INDEX:"BENEFICIO_INDEX",
+    CHANGE:"BENEFICIO_CHANGE",
+    ERROR:"BENEFICIO_ERROR",
+    SUCCESS:"BENEFICIO_SUCCESS",
+    SHOW:'BENEFICIO_SHOW',
 }
 
 
@@ -40,12 +40,12 @@ export const showResponse =(payload) => ({
 
 
 export const index = (id) => dispatch => {
-    return HttpAuth.get('/equipamento/')
+    return HttpAuth.get('/beneficio/')
     .then(res => typeof res !== 'undefined' && dispatch(indexResponse(res.data)))
 }
 
 export const show = (id) => dispatch => {
-    return HttpAuth.get('/equipamento/'+id)
+    return HttpAuth.get('/beneficio/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
 }
 
@@ -57,7 +57,7 @@ export const store = (data) => dispatch =>{
         msg:'Cadastrando Inscricao'
     }))
   
-    return HttpAuth.post('/equipamento/', data)
+    return HttpAuth.post('/beneficio/', data)
     .then(res =>{
        
         dispatch(changeLoading({open:false}) );
@@ -81,10 +81,10 @@ export const store = (data) => dispatch =>{
 export const update = (data) => dispatch =>{
     dispatch(changeLoading({
         open:true,
-        msg:'Atualizando Equipamento'
+        msg:'Atualizando Beneficio'
     }))
 
-    return HttpAuth.put('/equipamento/'+data.id,data)
+    return HttpAuth.put('/beneficio/'+data.id,data)
            .then(res =>{
               
                  dispatch(changeLoading({open:false}) );
@@ -106,33 +106,3 @@ export const update = (data) => dispatch =>{
 
 
 
-export const cep =(cep) => dispatch =>{
-    if(cep.length >8){
-        var cep3 = cep;
-    
-          var cepUrl = 'https://viacep.com.br/ws/' + cep3 + '/json/';
-        
-         // return axios.get(cepUrl).then(res => typeof res !== 'undefined' && dispatch(change(res.data)));
-
-    
-
-          return axios.get(cepUrl).then(res => {
-       
-              if(!res.data.erro){
-                let enderco = {
-                   "cep" :res.data.cep,
-                   "uf" :res.data.uf,
-                   "logradouro":res.data.logradouro,
-                   "localidade" : res.data.localidade,
-                   "bairro" :res.data.bairro
-
-                  }
-                
-                 dispatch(change(enderco))
-                 return true
-                }
-                return false
-            
-          });
-    }
-}
