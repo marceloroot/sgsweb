@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {store,change,show,update} from '../../../store/actions/usuario.action';
+import {index} from '../../../store/actions/equipamento.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
 import {useSelector,useDispatch} from 'react-redux';
 
-import {CircularProgress,TextField,InputAdornment,Button} from '@material-ui/core';
+import {CircularProgress,TextField,InputAdornment,Button, Select, MenuItem} from '@material-ui/core';
 
 import { FaSave } from 'react-icons/fa';
 
@@ -16,7 +17,8 @@ const Usuario = (props) =>{
 
     const dispatch = useDispatch();
     const data = useSelector(state =>state.usuarioReducers);
-    
+    const dataEquipamento = useSelector(state =>state.equipamentoReducers);
+
     const [state,setState] = React.useState({
         isLoading:true,
         isLoadingCep:false,
@@ -31,16 +33,22 @@ const Usuario = (props) =>{
     const usuario_id = (props.match.params.id) ? props.match.params.id : null;
     
     React.useEffect(()=>{
-        index();
+
+        dispatch(index()).then(res=>{
+            if(res){
+            _index();
+        }
+        })
         
+       
         
        
     },[dispatch])
 
 
 
-    const index = () =>{
-  
+    const _index = () =>{
+   
         if(usuario_id){
            
             dispatch(show(usuario_id)).then(res =>{
@@ -50,7 +58,7 @@ const Usuario = (props) =>{
                         window.location.replace('/usuario');
                     };
                     setState({...state,isLoading:false});
-                   console.log("entrou")
+                  
                   
                 }
                
@@ -79,7 +87,7 @@ const Usuario = (props) =>{
                       
                      {(state.isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> : 
                          <>
-                         
+                        
                         {/*Card Dados*/}
                         <h3 className="font-weight-normal mb-4">Usuario</h3>
                          
@@ -116,6 +124,7 @@ const Usuario = (props) =>{
                                         <label className="label-custom">Email</label>
                                         <TextField 
                                         error ={(data.error.email) && true}
+                                        type="email"
                                         onChange={text => {
                                             dispatch(change({
                                                 email:text.target.value
@@ -158,6 +167,7 @@ const Usuario = (props) =>{
                                             <strong className="text-danger">{data.error.senha}</strong>
                                                 
                                             }
+                                            {console.log(data.error.nome)}
                                 </div>
 
                                 
@@ -181,6 +191,40 @@ const Usuario = (props) =>{
                                         <strong className="text-danger">{data.error.telefone}</strong> 
                                         }
                                 </div>
+                            
+                                <div className="col-md-6 form-group">
+                                <label className="label-custom">Equipamento</label>
+                                    <Select
+                                        error ={(data.error.equipamento_id) && true}
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={data.usuario.equipamento_id}
+                                        onChange={text => {
+                                            dispatch(change({
+                                                equipamento_id:text.target.value
+                                            }))
+
+                                            if(data.error.equipamento_id) {
+                                                delete data.error.equipamento_id
+                                            }
+                                        }}
+                                        
+                                        >
+                                      { dataEquipamento.equipamentos.map(equipamento=>{
+                                          return(
+                                          (data.usuario.equipamento_id == equipamento.id) ? <MenuItem  value={equipamento.id}>{equipamento.nome}</MenuItem>: <MenuItem value={equipamento.id}>{equipamento.nome}</MenuItem>
+                                         
+                                          )
+                                        })}
+                                        
+                                       
+                                    </Select>
+                                    {(data.error.equipamento_id) && 
+                                        <strong className="text-danger">{data.error.equipamento_id}</strong> 
+                                        }
+                                </div>
+
+                                
                             </div>
 
                          

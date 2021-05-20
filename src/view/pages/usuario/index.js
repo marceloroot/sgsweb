@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/equipamento.action'
+import {index,mudastatus} from '../../../store/actions/usuario.action'
 
 
 
@@ -27,7 +27,7 @@ import {useSelector,useDispatch} from 'react-redux';
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
   { id: 'nome', label: 'Nome', minWidth: 200 },
-  { id: 'responsavel', label: 'Responsavel', minWidth: 200 },
+  { id: 'email', label: 'Email', minWidth: 200 },
   {
     id: 'editar',
     label: 'Editar',
@@ -35,6 +35,14 @@ const columns = [
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
+  {
+    id: 'status',
+    label: 'Status',
+    minWidth: 80,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  }
+
 
 
 ];
@@ -43,7 +51,7 @@ const columns = [
 
 const editIcon = (id) => (
   
-  <Link to={`/equipamento/${id}`} className="mr-2">
+  <Link to={`/usuario/${id}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
   </IconButton>
@@ -61,7 +69,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Equipamentos = (props) =>{
+const Usuarios = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -85,13 +93,13 @@ const Equipamentos = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.equipamentoReducers.equipamentos);
+    const data = useSelector(state => state.usuarioReducers.usuarios);
 
 
     React.useEffect(()=>{
   
         _index(); 
-   
+     
        },[amount])
   
        
@@ -109,8 +117,33 @@ const Equipamentos = (props) =>{
         })
     }
    
-   //MONTA TABELA
+   //Functions status
    
+
+   const _mudastatus = (id,status) => (
+    <>
+    {console.log(id)}
+   {(status =="A")?
+     <>
+    <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id))}>
+     <FaThumbsUp size="0.8em" className="mr-2" /> 
+    </IconButton>
+  
+    </>
+  
+    :
+    <>
+    <IconButton style={{color:'#ccc'}} onClick={()=>dispatch(mudastatus(id))}>
+     <FaThumbsDown size="0.8em" className="mr-2" /> 
+    </IconButton>
+ 
+    </>
+   
+ }
+  
+    </>
+ ); 
+
 
     return (
 
@@ -174,8 +207,9 @@ const Equipamentos = (props) =>{
                                     const dados ={  
                                             codigo:row.id,
                                             nome:row.nome,
-                                            responsavel:row.responsavel,
+                                            email:row.email,
                                             editar:editIcon(row.id),
+                                            status:_mudastatus(row.id,row.status),
                                         
                                             
                                     }
@@ -226,4 +260,4 @@ const Equipamentos = (props) =>{
     )
 }
 
-export default Equipamentos;
+export default Usuarios;

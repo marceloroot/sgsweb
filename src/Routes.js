@@ -11,7 +11,7 @@ const Beneficio =  lazy (() => import ('./view/pages/beneficio/edit'));
 const Beneficios =  lazy (() => import ('./view/pages/beneficio/index'));
 
 const Usuario =  lazy (() => import ('./view/pages/usuario/edit'));
-
+const Usuarios =  lazy (() => import ('./view/pages/usuario/index'));
 const Routes = () =>(
     <Router>
         <Suspense fallback={<div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress /></div>}>
@@ -28,8 +28,8 @@ const Routes = () =>(
 
                   {/*Usuario*/}
                   <Route path="/usuario" exact component={Usuario} />
-                
-
+                  <Route path="/usuario/:id" exact component={Usuario} />
+                  <Route path="/usuarios" exact component={Usuarios} />
               </Switch>
         </Suspense>
     </Router>
