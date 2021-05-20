@@ -12,44 +12,38 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaChevronLeft, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/equipamento.action'
-
+import {index,mudastatus} from '../../../store/actions/permissao.action'
+import {usuariocompermissao} from '../../../store/actions/usuario.action'
 
 
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
 
 import {useSelector,useDispatch} from 'react-redux';
-import { indexResponse } from '../../../store/actions/usuario.action';
 
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
   { id: 'nome', label: 'Nome', minWidth: 200 },
-  { id: 'responsavel', label: 'Responsavel', minWidth: 200 },
+  
+
   {
-    id: 'editar',
-    label: 'Editar',
+    id: 'status',
+    label: 'Status',
     minWidth: 80,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
-  },
+  }
+
 
 
 ];
 
 
 
-const editIcon = (id) => (
-  
-  <Link to={`/equipamento/${id}`} className="mr-2">
-  <IconButton color="primary">
-        <FaEdit size="0.8em" className="mr-2" /> 
-  </IconButton>
-  </Link>
-);  
+
 
 
 const useStyles = makeStyles({
@@ -62,7 +56,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Equipamentos = (props) =>{
+const Permissoes = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -86,37 +80,87 @@ const Equipamentos = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.equipamentoReducers.equipamentos);
-
+    const data = useSelector(state => state.permissaoReducers.permissoes);
+    const dataUsuario =useSelector(state => state.usuarioReducers.usuario);
+    
+    const usuario_id = (props.match.params.id) ? props.match.params.id : null;
 
     React.useEffect(()=>{
   
         _index(); 
-   
-       },[amount])
-  
      
+       },[amount,data])
+  
        
+      
+
     const _index = () => {
      
         dispatch(index()).then(res => {
             
             if(res.payload){
-                setIsLoading(false)
-                if(isLoadingMore && setIsLoadingMore(false));  
-  
+                dispatch(usuariocompermissao(usuario_id)).then(resu=>{
+                    if(resu.payload.usuario){
+                     
+                        setIsLoading(false)
+                        if(isLoadingMore && setIsLoadingMore(false));
+                       
+                    }
+                    else{
+                        window.location.replace('/usuarios');
+                    }
+                   
+                    
+                })
+                 
+          
             }
             
         })
     }
    
-   //MONTA TABELA
+   //Functions status
    
+
+   const _mudastatus = (id) => {
+    let test=false;
+    dataUsuario.permissoes &&   dataUsuario.permissoes.map((st)=>{
+      if(id == st.id){
+        test = true;
+      }
+   })
+   
+    return(
+    <>
+    
+   {(test)?
+     <>
+    <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id,dataUsuario.id))}>
+     <FaThumbsUp size="0.8em" className="mr-2" /> 
+    </IconButton>
+  
+    </>
+  
+    :
+    <>
+    <IconButton style={{color:'#ccc'}} onClick={()=>dispatch(mudastatus(id,dataUsuario.id))}>
+     <FaThumbsDown size="0.8em" className="mr-2" /> 
+    </IconButton>
+ 
+    </>
+   
+ }
+  
+    </>
+ ) 
+}
+
 
     return (
 
 
         <>
+        
           <div className="container-fluid h-100 ">
             <div className="row h-100">
             {(data.success) && <Redirect to={`/login`} />}
@@ -127,14 +171,23 @@ const Equipamentos = (props) =>{
                       
                      {(isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> : 
                          <>
+                         
                         {/*Botão Nove*/}
-                        <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/equipamento">
+                      
+                        <div className="row">
+                        <div className="col-6"><h3 className="font-weight-normal  ">{dataUsuario.nome}</h3></div>
+                        <div className="col-6">  
+                            <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
+                                
+                                <Link to="/usuarios">
                                         <Button  variant="contained"  color="primary" size="large">
-                                            <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
-                                                <strong>NOVO</strong>
+                                            <FaChevronLeft size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
+                                                <strong>Voltar</strong>
                                         </Button>
                                 </Link>
+                            </div>
+                        </div>
+
                         </div>
 
                         {/*MONTA TABEL*/}
@@ -175,8 +228,7 @@ const Equipamentos = (props) =>{
                                     const dados ={  
                                             codigo:row.id,
                                             nome:row.nome,
-                                            responsavel:row.responsavel,
-                                            editar:editIcon(row.id),
+                                            status:_mudastatus(row.id,row.status),
                                         
                                             
                                     }
@@ -227,4 +279,4 @@ const Equipamentos = (props) =>{
     )
 }
 
-export default Equipamentos;
+export default Permissoes;

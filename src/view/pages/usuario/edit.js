@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {store,change,show,update} from '../../../store/actions/usuario.action';
+import {store,change,show,update,indexResponse} from '../../../store/actions/usuario.action';
 import {index} from '../../../store/actions/equipamento.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
@@ -32,6 +32,15 @@ const Usuario = (props) =>{
 
     const usuario_id = (props.match.params.id) ? props.match.params.id : null;
     
+    React.useEffect(()=>{
+        return () =>{
+             dispatch(indexResponse({success:false}))
+           
+        }
+        
+
+},[])
+
     React.useEffect(()=>{
 
         dispatch(index()).then(res=>{
@@ -142,9 +151,11 @@ const Usuario = (props) =>{
                                         }
                                 </div>
                             </div>
-
-                            {/* Password*/}
                             <div className="row">
+                                {/* Password*/}
+                            {(!usuario_id) &&  
+                           
+                           
                                 <div className="col-md-6 form-group">
                                 <label className="label-custom  mb-1">Senha </label>
                              
@@ -167,9 +178,12 @@ const Usuario = (props) =>{
                                             <strong className="text-danger">{data.error.senha}</strong>
                                                 
                                             }
-                                            {console.log(data.error.nome)}
+                                           
                                 </div>
-
+                               
+                            }
+                            
+                            
                                 
                                 <div className="col-md-6 form-group">
                                         <label className="label-custom">Telefone</label>

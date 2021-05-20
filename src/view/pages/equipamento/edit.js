@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {store,change,cep,show,update} from '../../../store/actions/equipamento.action';
+import {store,change,cep,show,update,indexResponse} from '../../../store/actions/equipamento.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
@@ -50,7 +50,8 @@ const Equipamento = (props) =>{
         
        
     },[dispatch])
-
+    
+    
 
 
     const index = () =>{

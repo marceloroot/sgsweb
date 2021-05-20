@@ -8,7 +8,7 @@ const Sidebar = (props) =>{
            <img src={logo} className="img-fluid" />
            <ul className="p-0 m-0"> 
                <li>
-                   <Link to="/Equipamento" className={props.location.pathname === '/Equipamento' ? 'active' :''}>
+                   <Link to="/usuarios" className={props.location.pathname === '/Equipamento' ? 'active' :''}>
                    <FaUserCheck />
                    <text>Operador</text>
                    </Link>

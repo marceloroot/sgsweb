@@ -5,6 +5,7 @@ import  alertReducers from './alert.reducer';
 import  equipamentoReducers from './equipamento.reducer';
 import  beneficioReducers from './beneficio.reducer';
 import usuarioReducers from './usuario.reducer';
+import permissaoReducers from './permissao.reducer'
 
 const rootReducer = combineReducers({
     loadinReducers,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     equipamentoReducers,
     beneficioReducers,
     usuarioReducers,
+    permissaoReducers,
 })
 
 export default rootReducer;

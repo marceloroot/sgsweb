@@ -140,7 +140,7 @@ export const mudastatus = (id) => dispatch =>{
                       }
 
                       if(res.status === 201){
-                          dispatch(success(true));
+                        dispatch(success(false));
                           dispatch(changeNotify({open:true,msg:res.data.msg}));
                           dispatch(index());
                          
@@ -150,6 +150,12 @@ export const mudastatus = (id) => dispatch =>{
 }
 
 
+
+
+export const usuariocompermissao = (id) => dispatch => {
+    return HttpAuth.get('/usuario/usuariocompermissao/'+id)
+    .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+}
 
 
 

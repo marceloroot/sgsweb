@@ -12,10 +12,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaLock, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index,mudastatus} from '../../../store/actions/usuario.action'
+import {index,mudastatus,indexResponse} from '../../../store/actions/usuario.action'
 
 
 
@@ -31,6 +31,13 @@ const columns = [
   {
     id: 'editar',
     label: 'Editar',
+    minWidth: 80,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'per',
+    label: 'Permissões',
     minWidth: 80,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
@@ -54,6 +61,15 @@ const editIcon = (id) => (
   <Link to={`/usuario/${id}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
+  </IconButton>
+  </Link>
+);  
+
+const _permissoes = (id) => (
+  
+  <Link to={`/permissoes/${id}`} className="mr-2">
+  <IconButton color="secondary">
+        <FaLock size="0.8em" className="mr-2" /> 
   </IconButton>
   </Link>
 );  
@@ -103,7 +119,8 @@ const Usuarios = (props) =>{
        },[amount])
   
        
-       
+      
+
     const _index = () => {
      
         dispatch(index()).then(res => {
@@ -122,7 +139,7 @@ const Usuarios = (props) =>{
 
    const _mudastatus = (id,status) => (
     <>
-    {console.log(id)}
+    
    {(status =="A")?
      <>
     <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id))}>
@@ -209,6 +226,7 @@ const Usuarios = (props) =>{
                                             nome:row.nome,
                                             email:row.email,
                                             editar:editIcon(row.id),
+                                            per:_permissoes(row.id),
                                             status:_mudastatus(row.id,row.status),
                                         
                                             
