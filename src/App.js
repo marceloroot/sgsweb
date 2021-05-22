@@ -32,6 +32,10 @@ const theme = createMuiTheme({
       variant: "outlined",
       fullWidth:true
     },
+    MuiInput:{
+      variant: "outlined",
+      fullWidth:true
+    },
   },
 });
 

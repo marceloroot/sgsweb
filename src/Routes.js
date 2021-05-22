@@ -15,6 +15,8 @@ const Usuarios =  lazy (() => import ('./view/pages/usuario/index'));
 
 const Permissoes =  lazy (() => import ('./view/pages/usuario/permissoes'));
 
+const Pessoa =  lazy (() => import ('./view/pages/pessoa/edit'));
+
 const Routes = () =>(
     <Router>
         <Suspense fallback={<div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress /></div>}>
@@ -37,6 +39,9 @@ const Routes = () =>(
                   {/*Permissao*/}
                   <Route path="/permissoes/:id" exact component={Permissoes} />
 
+                   {/*Pessoa*/}
+                   <Route path="/familia/" exact component={Pessoa} />
+                    
               </Switch>
         </Suspense>
     </Router>
