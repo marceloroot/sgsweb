@@ -62,7 +62,8 @@ const Pessoa = (props) =>{
 
 
     const pessoa_id = (props.match.params.id) ? props.match.params.id : null;
-    
+    const chefe_id = (props.match.params.idchefe) ? props.match.params.idchefe : null;
+
     React.useEffect(()=>{
         index();
         
@@ -114,149 +115,7 @@ const Pessoa = (props) =>{
                      {(state.isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> : 
                          <>
                        
-                        {/*Card Localização*/}
-                        <h3 className="font-weight-normal mb-4">Familia</h3>
-                         
-                        {/* cep e bairro*/}
-                        <div className="card card-body  mb-4">
-                            <div className="row">
-                               <div className="col-md-4 form-group">
-                                    <label className="label-custom">CEP</label>
-                                    <TextField 
-                                      style={(state.isLoadingCep) ?{opacity:0.5}:{}}
-                                      error={(data.error.cep) && true}
-                                      type="tel"
-                                      InputProps={{
-                                          inputComponent:TextMaskedCustom,
-                                          value:data.pessoa.cep,
-                                          onChange:text=>{
-                                                 dispatch(change({ cep:text.target.value }));
-                                                 if(text.target.value.length >8){
-                                                      setState({...state,isLoadingCep:true})
-                                                      dispatch(cep(text.target.value)).then(res=>{
-                                                        setState({...state,isLoadingCep:false})
-                                                        if(!res){
-                                                            dispatch(changeNotify({open:true,class:'error',msg:'CEP invalido'}));
-                                                            dispatch(change({numero:''}))
-                                                            dispatch(change({cep:''}))
-                                                            dispatch(change({uf:''}))
-                                                            dispatch(change({logradouro:''}))
-                                                            dispatch(change({localidade:''}))
-                                                            dispatch(change({bairro:''}))
-                                                        }
-
-                                                      })
-                                                    
-                                                      if(data.error.cep){
-                                                          delete data.error.cep;
-                                                          delete data.error.uf;
-                                                          delete data.error.logradouro;
-                                                          delete data.error.localidade;
-                                                          delete data.error.bairro;
-                                                          
-                                                          
-                                                      } 
-                                                }
-                                          },
-                                          endAdornment:(
-                                                <InputAdornment position="start">
-                                                    {(state.isLoadingCep) ? <CircularProgress size={32} />:<></>
-                                                    }
-                                                </InputAdornment>
-                                          )
-                                      }}
-                                    />
-                                    {(data.error.cep) && 
-                                       <strong className="text-danger">{data.error.cep}</strong>
-                                    }
-                               </div>
-                           
-                                <div className="col-md-8 form-group">
-                                <label className="label-custom">Bairro</label>
-                                <TextField 
-                                  error ={(data.error.bairro) && true}
-                                  disabled
-                                  value={data.pessoa.bairro || ''}
-                                />
-                                {(data.error.bairro) && 
-                                   <strong className="text-danger">{data.error.bairro}</strong>
-                                    
-                                }
-                                </div>
-                            </div>
-
-                            {/*Rua numero*/}
-                              <div className="row">
-                                <div className="col-md-9 form-group">
-                                <label className="label-custom">Rua</label>
-                                <TextField 
-                                  error ={(data.error.logradouro) && true}
-                                  disabled
-                                  value={data.pessoa.logradouro || ''}
-                                />
-                                {(data.error.logradouro) && 
-                                   <strong className="text-danger">{data.error.logradouro}</strong>
-                                    
-                                }
-                                </div>
-                                <div className="col-md-3 form-group">
-                                <label className="label-custom">Numero</label>
-                                <TextField 
-                                  error ={(data.error.numero) && true}
-                                  onChange={text => {
-                                      dispatch(change({
-                                        numero:text.target.value
-                                      }))
-                                      if(data.error.numero) {
-                                        delete data.error.numero
-                                    }
-                                  }}
-                                  value={data.pessoa.numero || ''}
-                                />
-                                {(data.error.numero) && 
-                                   <strong className="text-danger">{data.error.numero}</strong>
-                                    
-                                }
-                                </div>
-                            </div>
-
-
-
-                            
-
-
-                            {/*cidade e uf*/}
-                            <div className="row">
-                                <div className="col-md-9 form-group">
-                                <label className="label-custom">Cidade</label>
-                                <TextField 
-                                  error ={(data.error.localidade) && true}
-                                  disabled
-                                  value={data.pessoa.localidade || ''}
-                                />
-                                {(data.error.localidade) && 
-                                   <strong className="text-danger">{data.error.localidade.localidade}</strong>
-                                    
-                                }
-                                </div>
-                                <div className="col-md-3 form-group">
-                                <label className="label-custom">UF</label>
-                                <TextField 
-                                  error ={(data.error.uf) && true}
-                                  disabled
-                                  value={data.pessoa.uf || ''}
-                                />
-                                {(data.error.uf) && 
-                                   <strong className="text-danger">{data.error.uf.uf}</strong>
-                                    
-                                }
-                                </div>
-                            </div>
-
-                        </div>
-
                          {/*Card Dados*/}
-                        
                          
                          {/* Nome e pessoa*/}
                          <div className="card card-body  mb-4">
@@ -506,6 +365,39 @@ const Pessoa = (props) =>{
                                         }
                                         </div>
                 
+                                        {/* Parantesco */}
+                                        <div className="col-md-3 form-group">
+                                            <label className="label-custom">Parentesco</label>
+                                            <Select
+                                                error ={(data.error.parentesco) && true}
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={data.pessoa.parentesco}
+                                                onChange={text => {
+                                                dispatch(change({
+                                                    parentesco:text.target.value
+                                                }))
+
+                                                if(data.error.parentesco) {
+                                                    delete data.error.parentesco
+                                                }
+                                                }}
+                                                    
+                                            >
+                                                
+                                                <MenuItem  value={"Filho(a)"}>Filho(a)</MenuItem>
+                                                <MenuItem  value={"Primo(a)"}>Primo(a)</MenuItem>
+                                                <MenuItem  value={"Irmão(a)"}>Irmão(a)</MenuItem>
+                                                <MenuItem  value={"Cunhado(a)"}>Cunhado(a)</MenuItem>
+                                                <MenuItem  value={"Outros"}>Outros</MenuItem>
+
+                                                </Select>
+                                                {(data.error.parentesco) && 
+                                                    <strong className="text-danger">{data.error.parentesco}</strong> 
+                                                }
+                                        </div>
+                                
+
                                 {/* Renda */}
                                 <div className="col-md-3 form-group">
                                     <label className="label-custom">Renda</label>
@@ -664,19 +556,19 @@ const Pessoa = (props) =>{
 
                     
                             </div>
-                             {console.log(data.error)}
+                           
                                 {/* Botao*/}
                                 <div className="d-flex mt-4 pb-4 ">
                                     <Link to="/login" style={{marginRight:"1em"}}>
                                         <Button variant="contained" size="large">Voltar</Button>
                                     </Link>
                                     {(pessoa_id)?
-                                        <Button onClick={() =>dispatch(update(data.pessoa))} variant="contained" color="primary" size="large">
+                                        <Button onClick={() =>dispatch(update(data.pessoa,chefe_id))} variant="contained" color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3"/>
                                             Atualizar
                                         </Button>
                                     :
-                                        <Button onClick={() =>dispatch(store(data.pessoa))} variant="contained" color="primary" size="large">
+                                        <Button onClick={() =>dispatch(store(data.pessoa,chefe_id))} variant="contained" color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3"/>
                                             Salva
                                         </Button>

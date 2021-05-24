@@ -12,10 +12,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaLock, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index,mudastatus,indexResponse} from '../../../store/actions/usuario.action'
+import {index} from '../../../store/actions/pessoa.action'
 
 
 
@@ -23,11 +23,12 @@ import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
 
 import {useSelector,useDispatch} from 'react-redux';
+import { indexResponse } from '../../../store/actions/pessoa.action';
 
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
-  { id: 'nome', label: 'Nome', minWidth: 200 },
-  { id: 'email', label: 'Email', minWidth: 200 },
+  { id: 'nome', label: 'Nome Responsavel', minWidth: 200 },
+  { id: 'cpf', label: 'cpf', minWidth: 200 },
   {
     id: 'editar',
     label: 'Editar',
@@ -35,21 +36,6 @@ const columns = [
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
-  {
-    id: 'per',
-    label: 'Permissões',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'status',
-    label: 'Status',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  }
-
 
 
 ];
@@ -58,18 +44,9 @@ const columns = [
 
 const editIcon = (id) => (
   
-  <Link to={`/usuario/${id}`} className="mr-2">
+  <Link to={`/familia/${id}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
-  </IconButton>
-  </Link>
-);  
-
-const _permissoes = (id) => (
-  
-  <Link to={`/permissoes/${id}`} className="mr-2">
-  <IconButton color="secondary">
-        <FaLock size="0.8em" className="mr-2" /> 
   </IconButton>
   </Link>
 );  
@@ -85,7 +62,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Usuarios = (props) =>{
+const Pessoas = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -109,18 +86,18 @@ const Usuarios = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.usuarioReducers.usuarios);
+    const data = useSelector(state => state.pessoaReducers.pessoas);
 
 
     React.useEffect(()=>{
   
         _index(); 
-     
+       
+   
        },[amount])
   
+     
        
-      
-
     const _index = () => {
      
         dispatch(index()).then(res => {
@@ -134,38 +111,14 @@ const Usuarios = (props) =>{
         })
     }
    
-   //Functions status
+   //MONTA TABELA
    
-
-   const _mudastatus = (id,status) => (
-    <>
-    
-   {(status =="A")?
-     <>
-    <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id))}>
-     <FaThumbsUp size="0.8em" className="mr-2" /> 
-    </IconButton>
-  
-    </>
-  
-    :
-    <>
-    <IconButton style={{color:'#ccc'}} onClick={()=>dispatch(mudastatus(id))}>
-     <FaThumbsDown size="0.8em" className="mr-2" /> 
-    </IconButton>
- 
-    </>
-   
- }
-  
-    </>
- ); 
-
 
     return (
 
 
         <>
+        {console.log(data)}
           <div className="container-fluid h-100 ">
             <div className="row h-100">
             {(data.success) && <Redirect to={`/login`} />}
@@ -178,7 +131,7 @@ const Usuarios = (props) =>{
                          <>
                         {/*Botão Nove*/}
                         <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/usuario">
+                                <Link to="/familia">
                                         <Button  variant="contained"  color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
                                                 <strong>NOVO</strong>
@@ -219,15 +172,13 @@ const Usuarios = (props) =>{
                                 </TableHead>
                                 <TableBody>
                                 
-                                    {data.filter(row => row.nome.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {data.filter(row => row.cpf.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 
                                     const dados ={  
                                             codigo:row.id,
                                             nome:row.nome,
-                                            email:row.email,
+                                            cpf:row.cpf,
                                             editar:editIcon(row.id),
-                                            per:_permissoes(row.id),
-                                            status:_mudastatus(row.id,row.status),
                                         
                                             
                                     }
@@ -278,4 +229,4 @@ const Usuarios = (props) =>{
     )
 }
 
-export default Usuarios;
+export default Pessoas;

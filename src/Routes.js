@@ -16,6 +16,9 @@ const Usuarios =  lazy (() => import ('./view/pages/usuario/index'));
 const Permissoes =  lazy (() => import ('./view/pages/usuario/permissoes'));
 
 const Pessoa =  lazy (() => import ('./view/pages/pessoa/edit'));
+const Pessoas =  lazy (() => import ('./view/pages/pessoa/index'));
+
+const Familiar =  lazy (() => import ('./view/pages/familiar/edit'));
 
 const Routes = () =>(
     <Router>
@@ -41,7 +44,13 @@ const Routes = () =>(
 
                    {/*Pessoa*/}
                    <Route path="/familia/" exact component={Pessoa} />
-                    
+                   <Route path="/familia/:id" exact component={Pessoa} />
+                   <Route path="/familias" exact component={Pessoas} />
+
+                   
+                   {/*Familiar*/}
+                   <Route path="/familiar/:idchefe" exact component={Familiar} />
+                   <Route path="/familiar/:id/chefe/:idchefe" exact component={Familiar} />
               </Switch>
         </Suspense>
     </Router>

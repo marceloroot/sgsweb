@@ -40,25 +40,45 @@ export const showResponse =(payload) => ({
 
 
 export const index = (id) => dispatch => {
-    return HttpAuth.get('/equipamento/')
+    return HttpAuth.get('/pessoa/')
     .then(res => typeof res !== 'undefined' && dispatch(indexResponse(res.data)))
 }
 
 export const show = (id) => dispatch => {
-    return HttpAuth.get('/equipamento/'+id)
+    return HttpAuth.get('/pessoa/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
 }
 
 
 
-export const store = (data) => dispatch =>{
+export const store = (data,id) => dispatch =>{
     dispatch(changeLoading({
         open:true,
         msg:'Cadastrando Familia'
     }))
     //fazer isso pegar do usuario logado
- 
-   console.log(data.pessoa)
+    
+    if(id){
+        
+        return HttpAuth.post('/familiar/'+id, data)
+        .then(res =>{
+           
+            dispatch(changeLoading({open:false}) );
+            if(typeof res !== 'undefined'){
+                 if(res.data.error){
+                     dispatch(success(false));
+                     dispatch(error(res.data.error));
+                 }
+    
+             if(res.status === 201){
+                 dispatch(success(true));
+                 dispatch(changeNotify({open:true,msg:res.data.msg}));
+                
+             }
+            }
+       })
+    }
+    else{
     return HttpAuth.post('/pessoa/', data)
     .then(res =>{
        
@@ -76,17 +96,40 @@ export const store = (data) => dispatch =>{
          }
         }
    })
+ }
 
 }
 
 
-export const update = (data) => dispatch =>{
+export const update = (data,id) => dispatch =>{
     dispatch(changeLoading({
         open:true,
         msg:'Atualizando Equipamento'
     }))
+    if(id){
+     
+        return HttpAuth.put('/familiar/'+data.id+'/chefe/'+id,data)
+        .then(res =>{
+           
+              dispatch(changeLoading({open:false}) );
+              if(typeof res !== 'undefined'){
+                   if(res.data.error){
+                       dispatch(success(false));
+                       dispatch(error(res.data.error));
+                   }
 
-    return HttpAuth.put('/equipamento/'+data.id,data)
+                   if(res.status === 201){
+                       dispatch(success(true));
+                       dispatch(changeNotify({open:true,msg:res.data.msg}));
+                      
+                   }
+              }
+        })
+
+
+    }
+    else{
+    return HttpAuth.put('/pessoa/'+data.id,data)
            .then(res =>{
               
                  dispatch(changeLoading({open:false}) );
@@ -103,6 +146,7 @@ export const update = (data) => dispatch =>{
                       }
                  }
            })
+        }
 }
 
 
