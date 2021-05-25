@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {store,change,cep,show,update,cpf} from '../../../store/actions/pessoa.action';
+import {store,change,cep,show,update,cpf, showResponsavel,indexResponse} from '../../../store/actions/pessoa.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
@@ -71,18 +71,30 @@ const Pessoa = (props) =>{
        
     },[dispatch])
     
-    
+    React.useEffect(()=>{
+        return () =>{
+             dispatch(indexResponse({success:false}))
+           
+        }
+        
+
+     },[])
 
 
     const index = () =>{
-  
+           
+        dispatch(showResponsavel(chefe_id)).then(res =>{
+            if(res){
+             }
+           
+        })
         if(pessoa_id){
            
             dispatch(show(pessoa_id)).then(res =>{
                 if(res){
                     if(res.payload.pessoa === null) {
                        
-                        window.location.replace('/pessoa');
+                        window.location.replace('/familias');
                     };
                     setState({...state,isLoading:false});
                    
@@ -103,10 +115,11 @@ const Pessoa = (props) =>{
 
     return (
         <>
+    
        
         <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/familias`} />}
+            {(data.success) && <Redirect to={`/familiares/${chefe_id}`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
@@ -116,13 +129,15 @@ const Pessoa = (props) =>{
                          <>
                        
                          {/*Card Dados*/}
-                         
+                          
+                         <h3 style={{fontSize:"1.5rem"}} className="font-weight-normal mb-4">Responsavel: {data.responsavel.nome}</h3>
+                         <h3 style={{fontSize:"1.3rem"}} className="font-weight-normal mb-4">CPF: {data.responsavel.cpf}</h3>
                          {/* Nome e pessoa*/}
                          <div className="card card-body  mb-4">
                          
                             <div className="row">
                                 <div className="col-md-6 form-group">
-                                        <label className="label-custom">Nome do Responsável</label>
+                                        <label className="label-custom">Nome do Familiar</label>
                                         <TextField 
                                         error ={(data.error.nome) && true}
                                         onChange={text => {

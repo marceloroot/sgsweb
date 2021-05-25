@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {store,change,cep,show,update,cpf} from '../../../store/actions/pessoa.action';
+import {store,change,cep,show,update,cpf,indexResponse} from '../../../store/actions/pessoa.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
@@ -71,7 +71,14 @@ const Pessoa = (props) =>{
     },[dispatch])
     
     
+    React.useEffect(()=>{
+        return () =>{
+             dispatch(indexResponse({success:false}))
+           
+        }
+        
 
+     },[])
 
     const index = () =>{
   

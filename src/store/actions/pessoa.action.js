@@ -4,11 +4,13 @@ import { changeLoading } from './loading.action'
 import { changeNotify } from './notify.action'
 import axios from 'axios';
 export const actionTypes  = {
-    INDEX:"EQUIPAMENTO_INDEX",
-    CHANGE:"EQUIPAMENTO_CHANGE",
-    ERROR:"EQUIPAMENTO_ERROR",
-    SUCCESS:"EQUIPAMENTO_SUCCESS",
-    SHOW:'EQUIPAMENTO_SHOW',
+    INDEX:"PESSOA_INDEX",
+    CHANGE:"PESSOA_CHANGE",
+    ERROR:"PESSOA_ERROR",
+    SUCCESS:"PESSOA_SUCCESS",
+    SHOW:'PESSOA_SHOW',
+    SHOWRESPONSAVEL:'PESSOA_SHOWRESPONSAVEL',
+    
 }
 
 
@@ -38,15 +40,36 @@ export const showResponse =(payload) => ({
     payload,
 })
 
+export const showResponseResponsavel =(payload) => ({
+    type: actionTypes.SHOWRESPONSAVEL,
+    payload,
+})
+
 
 export const index = (id) => dispatch => {
-    return HttpAuth.get('/pessoa/')
-    .then(res => typeof res !== 'undefined' && dispatch(indexResponse(res.data)))
+    if(id){
+        return HttpAuth.get('/familiar/'+id)
+        .then(res => typeof res !== 'undefined' && dispatch(indexResponse(res.data)))
+    }
+    else{
+        return HttpAuth.get('/pessoa/')
+        .then(res => typeof res !== 'undefined' && dispatch(indexResponse(res.data)))
+    }
 }
 
 export const show = (id) => dispatch => {
+   
     return HttpAuth.get('/pessoa/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+    
+}
+
+
+export const showResponsavel = (id) => dispatch => {
+   
+    return HttpAuth.get('/familiar/show/'+id)
+    .then(res => typeof res !== 'undefined' && dispatch(showResponseResponsavel(res.data)))
+    
 }
 
 
@@ -104,7 +127,7 @@ export const store = (data,id) => dispatch =>{
 export const update = (data,id) => dispatch =>{
     dispatch(changeLoading({
         open:true,
-        msg:'Atualizando Equipamento'
+        msg:'Atualizando PESSOA'
     }))
     if(id){
      

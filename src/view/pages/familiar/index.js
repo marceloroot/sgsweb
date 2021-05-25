@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 
 
@@ -12,10 +10,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaUsersCog, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/pessoa.action'
+import {index, showResponsavel} from '../../../store/actions/pessoa.action'
 
 
 
@@ -30,13 +28,6 @@ const columns = [
   { id: 'nome', label: 'Nome Responsavel', minWidth: 200 },
   { id: 'cpf', label: 'cpf', minWidth: 200 },
   {
-    id: 'familiares',
-    label: 'Familiares',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
     id: 'editar',
     label: 'Editar',
     minWidth: 80,
@@ -49,23 +40,14 @@ const columns = [
 
 
 
-const editIcon = (id) => (
+const editIcon = (id,chefeid) => (
   
-  <Link to={`/familia/${id}`} className="mr-2">
+  <Link to={`/familiar/${id}/chefe/${chefeid}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
   </IconButton>
   </Link>
 );  
-
-const familiaresIcon = (id) => (
-  
-    <Link to={`/familiares/${id}`} className="mr-2">
-    <IconButton color="primary">
-          <FaUsersCog size="0.8em" className="mr-2" /> 
-    </IconButton>
-    </Link>
-  );  
 
 
 const useStyles = makeStyles({
@@ -103,7 +85,8 @@ const Pessoas = (props) =>{
   
     const dispatch = useDispatch();
     const data = useSelector(state => state.pessoaReducers.pessoas);
-
+    const responsavel = useSelector(state => state.pessoaReducers.responsavel);
+    const familiar_id = (props.match.params.id) ? props.match.params.id : null;
 
     React.useEffect(()=>{
   
@@ -115,10 +98,15 @@ const Pessoas = (props) =>{
      
        
     const _index = () => {
-     
-        dispatch(index()).then(res => {
+        dispatch(showResponsavel(familiar_id)).then(res =>{
+            if(res){
+             }
+           
+        })
+        dispatch(index(familiar_id)).then(res => {
             
             if(res.payload){
+                
                 setIsLoading(false)
                 if(isLoadingMore && setIsLoadingMore(false));  
   
@@ -137,7 +125,7 @@ const Pessoas = (props) =>{
         {console.log(data)}
           <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/familias`} />}
+            {(data.success) && <Redirect to={`/login`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
@@ -146,14 +134,27 @@ const Pessoas = (props) =>{
                      {(isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> : 
                          <>
                         {/*Botão Nove*/}
-                        <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/familia">
+
+                        <div className="row">
+                        <div className="col-6">
+                            <h3 className="font-weight-normal  ">{responsavel.nome} </h3>
+                            <h3 className="font-weight-normal  ">{responsavel.cpf} </h3>
+                        </div>
+                        <div className="col-6">  
+                            <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
+                                
+                            <Link to={`/familiar/${familiar_id}`}>
                                         <Button  variant="contained"  color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
                                                 <strong>NOVO</strong>
                                         </Button>
                                 </Link>
+                            </div>
                         </div>
+
+                        </div>
+
+
 
                         {/*MONTA TABEL*/}
                         <Paper className={classes.root}>
@@ -194,10 +195,9 @@ const Pessoas = (props) =>{
                                             codigo:row.id,
                                             nome:row.nome,
                                             cpf:row.cpf,
-                                            familiares:familiaresIcon(row.id),
-                                            editar:editIcon(row.id),
+                                            editar:editIcon(row.id,row.familiar_id),
                                         
-                                            
+                                          
                                     }
                                     
                                     

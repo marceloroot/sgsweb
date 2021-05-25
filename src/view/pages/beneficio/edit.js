@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {store,change,cep,show,update} from '../../../store/actions/beneficio.action';
+import {store,change,cep,show,update,indexResponse} from '../../../store/actions/beneficio.action';
 import {changeNotify} from '../../../store/actions/notify.action';
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
@@ -50,7 +50,15 @@ const Beneficio = (props) =>{
         
        
     },[dispatch])
+   
+    React.useEffect(()=>{
+        return () =>{
+             dispatch(indexResponse({success:false}))
+           
+        }
+        
 
+     },[])
 
 
     const index = () =>{

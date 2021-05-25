@@ -11,6 +11,7 @@ const initialState = {
     error:{},
  
     status:[],
+    responsavel:{},
     
 }
 
@@ -23,6 +24,10 @@ export default (state = initialState, { type, payload }) => {
         return { ...state, ...payload }
 
     case actionTypes.SHOW:
+      
+        return { ...state, ...payload }
+
+    case actionTypes.SHOWRESPONSAVEL:
       
         return { ...state, ...payload }
       
