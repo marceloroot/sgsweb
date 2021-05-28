@@ -21,11 +21,14 @@ const Pessoas =  lazy (() => import ('./view/pages/pessoa/index'));
 const Familiar =  lazy (() => import ('./view/pages/familiar/edit'));
 const Familiares = lazy (() => import ('./view/pages/familiar/index'));
 
+const BeneficiosFamilias = lazy (() => import ('./view/pages/pessoa/beneficiosfamiliares'));
+
 const Routes = () =>(
     <Router>
         <Suspense fallback={<div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress /></div>}>
               <Switch>
-                  <Route path="/login" exact component={Login} />
+            
+                 
                   <Route path="/equipamento" exact component={Equipamento} />
                   <Route path="/equipamento/:id" exact component={Equipamento} />
                   <Route path="/equipamentos" exact component={Equipamentos} />
@@ -53,6 +56,12 @@ const Routes = () =>(
                    <Route path="/familiar/:idchefe" exact component={Familiar} />
                    <Route path="/familiar/:id/chefe/:idchefe" exact component={Familiar} />
                    <Route path="/familiares/:id" exact component={Familiares} />
+
+                  {/*beneficioporfamilia*/}
+                  <Route path="/showbeneficios/:id" exact component={BeneficiosFamilias} />
+
+
+                  <Route path="/"  component={Login} />
 
               </Switch>
         </Suspense>

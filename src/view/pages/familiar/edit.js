@@ -98,7 +98,6 @@ const Pessoa = (props) =>{
                     };
                     setState({...state,isLoading:false});
                    
-                  
                 }
                
 
@@ -129,7 +128,6 @@ const Pessoa = (props) =>{
                          <>
                        
                          {/*Card Dados*/}
-                          
                          <h3 style={{fontSize:"1.5rem"}} className="font-weight-normal mb-4">Responsavel: {data.responsavel.nome}</h3>
                          <h3 style={{fontSize:"1.3rem"}} className="font-weight-normal mb-4">CPF: {data.responsavel.cpf}</h3>
                          {/* Nome e pessoa*/}

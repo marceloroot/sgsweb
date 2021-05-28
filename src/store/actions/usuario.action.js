@@ -121,6 +121,11 @@ export const show = (id) => dispatch => {
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
 }
 
+export const getUserToken = () => dispatch => {
+    return HttpAuth.get('/usuario/decoude/')
+    .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+}
+
 
 export const mudastatus = (id) => dispatch =>{
     dispatch(changeLoading({

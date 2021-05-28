@@ -1,11 +1,17 @@
 import React from 'react';
 import {FaChevronDown} from 'react-icons/fa';
-
+import {deslogar} from '../../../store/actions/auth.action';
+import {useSelector,useDispatch} from 'react-redux'
 const Header = () =>{
+  const dispatch = useDispatch();
     return (
-
+      <>
+      {(window.innerWidth < 577) ? 
+        <>
+        </>
+       :
       <header className="container-fluid d-flex justify-content-end">
-       <div className="d-flex align-items-center">
+       <div className="d-flex align-items-center"  onClick={() => dispatch(deslogar())}>
             <div className="text-right mr-3">
                 <span className="d-block m-0 p-0 text-white">Marcelo</span>
                 <small className="m-0 p-0">Adm</small>
@@ -14,6 +20,8 @@ const Header = () =>{
             <FaChevronDown /> 
        </div>
       </header>
+      }
+      </>
     )
 }
 

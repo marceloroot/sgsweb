@@ -2,6 +2,8 @@ import { Http, HttpAuth } from '../../config/Http'
 import { changeAlert } from './alert.action'
 import { changeLoading } from './loading.action'
 import { changeNotify } from './notify.action'
+
+
 import axios from 'axios';
 export const actionTypes  = {
     INDEX:"PESSOA_INDEX",
@@ -79,13 +81,14 @@ export const store = (data,id) => dispatch =>{
         open:true,
         msg:'Cadastrando Familia'
     }))
-    //fazer isso pegar do usuario logado
+    
+   
     
     if(id){
         
         return HttpAuth.post('/familiar/'+id, data)
         .then(res =>{
-           
+        
             dispatch(changeLoading({open:false}) );
             if(typeof res !== 'undefined'){
                  if(res.data.error){
@@ -129,8 +132,9 @@ export const update = (data,id) => dispatch =>{
         open:true,
         msg:'Atualizando PESSOA'
     }))
+
     if(id){
-     
+       
         return HttpAuth.put('/familiar/'+data.id+'/chefe/'+id,data)
         .then(res =>{
            
@@ -152,6 +156,7 @@ export const update = (data,id) => dispatch =>{
 
     }
     else{
+    
     return HttpAuth.put('/pessoa/'+data.id,data)
            .then(res =>{
               
@@ -172,6 +177,10 @@ export const update = (data,id) => dispatch =>{
         }
 }
 
+export const pessoacombeneficio = (id) => dispatch => {
+    return HttpAuth.get('/pessoa/showbeneficios/'+id)
+    .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+}
 
 
 

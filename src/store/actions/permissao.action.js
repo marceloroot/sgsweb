@@ -1,7 +1,7 @@
 import { Http, HttpAuth } from '../../config/Http'
 import { changeLoading } from './loading.action'
 import { changeNotify } from './notify.action'
-
+import {usuariocompermissao} from './usuario.action'
 export const actionTypes = {
     CHANGE: 'PERMISSAO_CHANGE',
     ERROR: 'PERMISSAO_ERROR',
@@ -69,10 +69,16 @@ export const mudastatus = (id,userid) => dispatch =>{
                       }
 
                       if(res.status === 201){
-                          dispatch(success(false));
-                          dispatch(changeNotify({open:true,msg:res.data.msg}));
-                        
                          
+                          
+                          dispatch(usuariocompermissao(userid)).then(resu=>{
+                            if(resu.payload.usuario){
+                             
+                                dispatch(success(false));
+                                dispatch(changeNotify({open:true,msg:res.data.msg}));
+                               
+                            }
+                        })
                       }
                  }
            })

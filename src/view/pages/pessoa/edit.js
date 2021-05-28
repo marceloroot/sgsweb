@@ -79,7 +79,7 @@ const Pessoa = (props) =>{
         
 
      },[])
-
+  
     const index = () =>{
   
         if(pessoa_id){
@@ -645,33 +645,10 @@ const Pessoa = (props) =>{
                                             }
                                 </div>
 
-                                <div className="col-md-6 form-group">
-                                <label className="label-custom  mb-1">usuario retirar na hora de fazer login</label>
-                             
-                                        <TextField 
-                                            error ={(data.error.usuario_id) && true}
-                                            
-                                            onChange={text => {
-                                                dispatch(change({
-                                                    usuario_id:text.target.value
-                                                }))
-
-                                                if(data.error.usuario_id) {
-                                                    delete data.error.usuario_id
-                                                }
-                                            }}
-                                            value={data.pessoa.usuario_id || ''}
-                                           
-                                            />
-                                            {(data.error.usuario_id) && 
-                                            <strong className="text-danger">{data.error.usuario_id}</strong>
-                                                
-                                            }
-                                </div>
 
                     
                             </div>
-                             {console.log(data.error)}
+                        
                                 {/* Botao*/}
                                 <div className="d-flex mt-4 pb-4 ">
                                     <Link to="/login" style={{marginRight:"1em"}}>

@@ -3,6 +3,7 @@ import { changeAlert } from './alert.action'
 import { changeLoading } from './loading.action'
 import { changeNotify } from './notify.action'
 import axios from 'axios';
+import { pessoacombeneficio } from './pessoa.action';
 export const actionTypes  = {
     INDEX:"BENEFICIO_INDEX",
     CHANGE:"BENEFICIO_CHANGE",
@@ -102,6 +103,43 @@ export const update = (data) => dispatch =>{
                  }
            })
 }
+
+export const mudastatus = (id,pessoaid) => dispatch =>{
+    dispatch(changeLoading({
+        open:true,
+        msg:'Atualizando Status'
+    }))
+ 
+    return HttpAuth.put('/beneficio/'+pessoaid+'/editbeneficios/'+id)
+           .then(res =>{
+              
+                 
+                 dispatch(changeLoading({open:false}) );
+                 if(typeof res !== 'undefined'){
+                      if(res.data.error){
+                          dispatch(success(false));
+                          dispatch(error(res.data.error));
+                      }
+
+                      if(res.status === 201){
+                         
+                          
+                          dispatch(pessoacombeneficio(pessoaid)).then(resu=>{
+                            if(resu.payload.usuario){
+                             
+                                dispatch(success(false));
+                                dispatch(changeNotify({open:true,msg:res.data.msg}));
+                               
+                            }
+                        })
+                      }
+                 }
+           })
+}
+
+
+
+
 
 
 

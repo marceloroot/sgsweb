@@ -89,7 +89,7 @@ const Permissoes = (props) =>{
   
         _index(); 
      
-       },[amount,data])
+       },[amount])
   
        
       
@@ -129,6 +129,7 @@ const Permissoes = (props) =>{
         test = true;
       }
    })
+   
    
     return(
     <>

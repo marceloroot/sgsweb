@@ -12,76 +12,38 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaUsersCog, FaBtc, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaChevronLeft, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/pessoa.action'
-
+import {index,mudastatus} from '../../../store/actions/beneficio.action'
+import {pessoacombeneficio} from '../../../store/actions/pessoa.action'
 
 
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
 
 import {useSelector,useDispatch} from 'react-redux';
-import { indexResponse } from '../../../store/actions/pessoa.action';
 
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
-  { id: 'nome', label: 'Nome Responsavel', minWidth: 200 },
-  { id: 'cpf', label: 'cpf', minWidth: 200 },
+  { id: 'nome', label: 'Nome', minWidth: 200 },
+  
+
   {
-    id: 'familiares',
-    label: 'Familiares',
+    id: 'status',
+    label: 'Status',
     minWidth: 80,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'editar',
-    label: 'Editar',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'beneficios',
-    label: 'Beneficios',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
+  }
+
 
 
 ];
 
 
 
-const editIcon = (id) => (
-  
-  <Link to={`/familia/${id}`} className="mr-2">
-  <IconButton color="primary">
-        <FaEdit size="0.8em" className="mr-2" /> 
-  </IconButton>
-  </Link>
-);  
 
-const beneficiosIcon = (id) => (
-  
-  <Link to={`/showbeneficios/${id}`} className="mr-2">
-  <IconButton color="secondary">
-        <FaBtc size="0.8em" className="mr-2" /> 
-  </IconButton>
-  </Link>
-);  
-
-const familiaresIcon = (id) => (
-  
-    <Link to={`/familiares/${id}`} className="mr-2">
-    <IconButton color="primary">
-          <FaUsersCog size="0.8em" className="mr-2" /> 
-    </IconButton>
-    </Link>
-  );  
 
 
 const useStyles = makeStyles({
@@ -94,7 +56,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Pessoas = (props) =>{
+const BeneficiosFamilia = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -118,42 +80,91 @@ const Pessoas = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.pessoaReducers.pessoas);
-
+    const data = useSelector(state => state.beneficioReducers.beneficios);
+    const dataPessoa =useSelector(state => state.pessoaReducers.pessoa);
+    
+    const pessoa_id = (props.match.params.id) ? props.match.params.id : null;
 
     React.useEffect(()=>{
   
         _index(); 
-       
-   
+     
        },[amount])
   
-     
        
+      
+
     const _index = () => {
      
         dispatch(index()).then(res => {
             
             if(res.payload){
-                setIsLoading(false)
-                if(isLoadingMore && setIsLoadingMore(false));  
-  
+                dispatch(pessoacombeneficio(pessoa_id)).then(resu=>{
+                    if(resu.payload.pessoa){
+                     
+                        setIsLoading(false)
+                        if(isLoadingMore && setIsLoadingMore(false));
+                       
+                    }
+                    else{
+                        window.location.replace('/familias');
+                    }
+                   
+                    
+                })
+                 
+          
             }
             
         })
     }
    
-   //MONTA TABELA
+   //Functions status
    
+
+   const _mudastatus = (id) => {
+    let test=false;
+    dataPessoa.beneficios &&   dataPessoa.beneficios.map((st)=>{
+      if(id == st.id){
+        test = true;
+      }
+   })
+   
+   
+    return(
+    <>
+    
+   {(test)?
+     <>
+    <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id,dataPessoa.id))}>
+     <FaThumbsUp size="0.8em" className="mr-2" /> 
+    </IconButton>
+  
+    </>
+  
+    :
+    <>
+    <IconButton style={{color:'#ccc'}} onClick={()=>dispatch(mudastatus(id,dataPessoa.id))}>
+     <FaThumbsDown size="0.8em" className="mr-2" /> 
+    </IconButton>
+ 
+    </>
+   
+ }
+  
+    </>
+ ) 
+}
+
 
     return (
 
 
         <>
-      
+        
           <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/familias`} />}
+            {(data.success) && <Redirect to={`/login`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
@@ -161,14 +172,23 @@ const Pessoas = (props) =>{
                       
                      {(isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> : 
                          <>
+                         
                         {/*Botão Nove*/}
-                        <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/familia">
+                      
+                        <div className="row">
+                        <div className="col-6"><h3 className="font-weight-normal  ">{dataPessoa.nome}</h3></div>
+                        <div className="col-6">  
+                            <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
+                                
+                                <Link to="/familias">
                                         <Button  variant="contained"  color="primary" size="large">
-                                            <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
-                                                <strong>NOVO</strong>
+                                            <FaChevronLeft size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
+                                                <strong>Voltar</strong>
                                         </Button>
                                 </Link>
+                            </div>
+                        </div>
+
                         </div>
 
                         {/*MONTA TABEL*/}
@@ -204,15 +224,12 @@ const Pessoas = (props) =>{
                                 </TableHead>
                                 <TableBody>
                                 
-                                    {data.filter(row => row.cpf.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {data.filter(row => row.nome.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 
                                     const dados ={  
                                             codigo:row.id,
                                             nome:row.nome,
-                                            cpf:row.cpf,
-                                            familiares:familiaresIcon(row.id),
-                                            editar:editIcon(row.id),
-                                            beneficios:beneficiosIcon(row.id),
+                                            status:_mudastatus(row.id,row.status),
                                         
                                             
                                     }
@@ -249,9 +266,6 @@ const Pessoas = (props) =>{
                             </Paper>
 
 
-
-
-
                          </>
                      }
 
@@ -263,4 +277,4 @@ const Pessoas = (props) =>{
     )
 }
 
-export default Pessoas;
+export default BeneficiosFamilia;

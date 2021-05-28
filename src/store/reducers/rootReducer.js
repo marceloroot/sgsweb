@@ -7,6 +7,8 @@ import  beneficioReducers from './beneficio.reducer';
 import usuarioReducers from './usuario.reducer';
 import permissaoReducers from './permissao.reducer'
 import pessoaReducers from './pessoa.reducer'
+import authReducers from './auth.reducer'
+
 
 const rootReducer = combineReducers({
     loadinReducers,
@@ -17,6 +19,7 @@ const rootReducer = combineReducers({
     usuarioReducers,
     permissaoReducers,
     pessoaReducers,
+    authReducers,
 })
 
 export default rootReducer;
