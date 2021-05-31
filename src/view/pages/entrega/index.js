@@ -12,10 +12,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaUsersCog, FaBtc, FaAd, FaListAlt, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/pessoa.action'
+import {index} from '../../../store/actions/entrega.action';
+import {pessoacombeneficio as showResponsavel} from '../../../store/actions/pessoa.action';
 
 
 
@@ -23,48 +24,21 @@ import Header from "../../components/header"
 import Sidebar from "../../components/sidebar";
 
 import {useSelector,useDispatch} from 'react-redux';
-import { indexResponse } from '../../../store/actions/pessoa.action';
+import { indexResponse } from '../../../store/actions/usuario.action';
 
 const columns = [
   { id: 'codigo', label: 'Codigo', minWidth: 130 },
-  { id: 'nome', label: 'Nome Responsavel', minWidth: 200 },
-  { id: 'cpf', label: 'cpf', minWidth: 200 },
-  {
-    id: 'listaentrega',
-    label: 'Entregas',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'deferir',
-    label: 'Deferir',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'familiares',
-    label: 'Familiares',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
+  { id: 'responsavel', label: 'Responsavel', minWidth: 200 },
+  { id: 'beneficio', label: 'Benefício', minWidth: 200 },
+  { id: 'equipamento', label: 'Equipamento', minWidth: 200 },
+  { id: 'quantidade', label: 'Quantidade', minWidth: 200 },
   {
     id: 'editar',
-    label: 'Editar',
+    label: '2 VIA',
     minWidth: 80,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
-  {
-    id: 'beneficios',
-    label: 'Beneficios',
-    minWidth: 80,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-
 
 
 ];
@@ -73,48 +47,12 @@ const columns = [
 
 const editIcon = (id) => (
   
-  <Link to={`/familia/${id}`} className="mr-2">
+  <Link to={`/equipamento/${id}`} className="mr-2">
   <IconButton color="primary">
         <FaEdit size="0.8em" className="mr-2" /> 
   </IconButton>
   </Link>
 );  
-
-const beneficiosIcon = (id) => (
-  
-  <Link to={`/showbeneficios/${id}`} className="mr-2">
-  <IconButton color="secondary">
-        <FaBtc size="0.8em" className="mr-2" /> 
-  </IconButton>
-  </Link>
-);  
-
-const familiaresIcon = (id) => (
-  
-    <Link to={`/familiares/${id}`} className="mr-2">
-    <IconButton color="tertiary">
-          <FaUsersCog size="0.8em" className="mr-2" /> 
-    </IconButton>
-    </Link>
-  );  
-
-  const deferirIcon = (id) => (
-  
-    <Link to={`/entrega/${id}`} className="mr-2">
-    <IconButton color="secondary">
-          <FaAd size="0.8em" className="mr-2" /> 
-    </IconButton>
-    </Link>
-  );  
-
-  const listaEntregaIcon = (id) => (
-  
-    <Link to={`/entregas/${id}`} className="mr-2">
-    <IconButton style={{color:"#D79B00"}}>
-          <FaListAlt size="0.8em" className="mr-2" /> 
-    </IconButton>
-    </Link>
-  );  
 
 
 const useStyles = makeStyles({
@@ -127,7 +65,7 @@ const useStyles = makeStyles({
     },
   });
 
-const Pessoas = (props) =>{
+const Entregas = (props) =>{
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
@@ -151,21 +89,20 @@ const Pessoas = (props) =>{
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
-    const data = useSelector(state => state.pessoaReducers.pessoas);
-
+    const data = useSelector(state => state.entregaReducers.entregas);
+    const pessoa_id = (props.match.params.id) ? props.match.params.id : null;
 
     React.useEffect(()=>{
   
-        _index(); 
-       
+        _index(pessoa_id); 
    
        },[amount])
   
      
        
-    const _index = () => {
+    const _index = (id) => {
      
-        dispatch(index()).then(res => {
+        dispatch(index(id)).then(res => {
             
             if(res.payload){
                 setIsLoading(false)
@@ -183,10 +120,9 @@ const Pessoas = (props) =>{
 
 
         <>
-      
           <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/familias`} />}
+            {(data.success) && <Redirect to={`/login`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
@@ -196,10 +132,10 @@ const Pessoas = (props) =>{
                          <>
                         {/*Botão Nove*/}
                         <div style={{display:'flex',alignItems:'flex-end', justifyContent:'flex-end'}}>
-                                <Link to="/familia">
+                                <Link to="/familias">
                                         <Button  variant="contained"  color="primary" size="large">
                                             <FaSave size="1.5rem"  className="mr-3" style={{marginRight:'1em'}}/>
-                                                <strong>NOVO</strong>
+                                                <strong>Voltar</strong>
                                         </Button>
                                 </Link>
                         </div>
@@ -236,23 +172,20 @@ const Pessoas = (props) =>{
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                
-                                    {data.filter(row => row.cpf.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                     {console.log(data)}
+                                    {data.filter(row => row.pessoa.nome.toLocaleString().includes(amount)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 
                                     const dados ={  
                                             codigo:row.id,
-                                            nome:row.nome,
-                                            cpf:row.cpf,
-                                            familiares:familiaresIcon(row.id),
+                                            responsavel:row.pessoa.nome,
+                                            equipamento:row.equipamento.nome,
+                                            quantidade:row.quantidade,
+                                            beneficio:row.beneficio.nome,
                                             editar:editIcon(row.id),
-                                            beneficios:beneficiosIcon(row.id),
-                                            deferir:deferirIcon(row.id),
-                                            listaentrega:listaEntregaIcon(row.id),
-                                            
+                                        
                                             
                                     }
-                                    
-                                    
+                                   
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={dados.codigo}>
                                         {columns.map((column) => {
@@ -298,4 +231,4 @@ const Pessoas = (props) =>{
     )
 }
 
-export default Pessoas;
+export default Entregas;

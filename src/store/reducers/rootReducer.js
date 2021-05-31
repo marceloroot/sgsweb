@@ -8,6 +8,7 @@ import usuarioReducers from './usuario.reducer';
 import permissaoReducers from './permissao.reducer'
 import pessoaReducers from './pessoa.reducer'
 import authReducers from './auth.reducer'
+import entregaReducers from './entrega.reducer'
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     permissaoReducers,
     pessoaReducers,
     authReducers,
+    entregaReducers,
 })
 
 export default rootReducer;
