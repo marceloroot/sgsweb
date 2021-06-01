@@ -25,6 +25,9 @@ const BeneficiosFamilias = lazy (() => import ('./view/pages/pessoa/beneficiosfa
 
 const Entrega = lazy (() => import ('./view/pages/entrega/edit'));
 const Entregas = lazy (() => import ('./view/pages/entrega/index'));
+
+const Emissao = lazy (() => import ('./view/pages/entrega/emissao'));
+
 const Routes = () =>(
     <Router>
         <Suspense fallback={<div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress /></div>}>
@@ -66,7 +69,10 @@ const Routes = () =>(
                   <Route path="/entrega/:id" exact component={Entrega} />
                   <Route path="/entregas/:id" exact component={Entregas} />
 
-                  <Route path="/"  component={Login} />
+                  <Route path="/emissao/:id" exact component={Emissao} />
+                    
+                  <Route path="/login" exact   component={Login} />
+                  <Route path="/"   component={Login} />
 
               </Switch>
         </Suspense>

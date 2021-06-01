@@ -70,7 +70,7 @@ const Sidebar = (props) =>{
                    </Link>
                </li>
                <li>
-               <Link to="/login">
+               <Link to="/familias">
                    <FaCalendarCheck />
                    <text>Atendimento</text>
                    </Link>

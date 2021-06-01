@@ -46,7 +46,7 @@ export const index = (id) => dispatch => {
 }
 
 export const show = (id) => dispatch => {
-    return HttpAuth.get('/beneficio/'+id)
+    return HttpAuth.get('/entrega/show/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
 }
 
@@ -106,6 +106,35 @@ export const update = (data) => dispatch =>{
                  }
            })
 }
+
+
+export const mudastatus = (id,pessoaid) => dispatch =>{
+    dispatch(changeLoading({
+        open:true,
+        msg:'Atualizando Status'
+    }))
+ 
+    return HttpAuth.put('/entrega/'+id)
+           .then(res =>{
+              
+                 
+                 dispatch(changeLoading({open:false}) );
+                 if(typeof res !== 'undefined'){
+                      if(res.data.error){
+                          dispatch(success(false));
+                          dispatch(error(res.data.error));
+                      }
+
+                      if(res.status === 201){
+                        dispatch(success(false));
+                          dispatch(changeNotify({open:true,msg:res.data.msg}));
+                          dispatch(index(pessoaid));
+                         
+                      }
+                 }
+           })
+}
+
 
 
 

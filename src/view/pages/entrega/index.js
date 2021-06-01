@@ -12,11 +12,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, } from 'react-icons/fa';
+import { FaEdit, FaFilePdf,FaThumbsDown, FaSearch,FaThumbsUp, FaSave, FaComments, FaAudible, FaFilePowerpoint, } from 'react-icons/fa';
 import { Link,Redirect } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Input, InputAdornment } from '@material-ui/core';
-import {index} from '../../../store/actions/entrega.action';
-import {pessoacombeneficio as showResponsavel} from '../../../store/actions/pessoa.action';
+import {index,mudastatus} from '../../../store/actions/entrega.action';
+
 
 
 
@@ -33,6 +33,13 @@ const columns = [
   { id: 'equipamento', label: 'Equipamento', minWidth: 200 },
   { id: 'quantidade', label: 'Quantidade', minWidth: 200 },
   {
+    id: 'status',
+    label: 'Status',
+    minWidth: 80,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
     id: 'editar',
     label: '2 VIA',
     minWidth: 80,
@@ -47,12 +54,15 @@ const columns = [
 
 const editIcon = (id) => (
   
-  <Link to={`/equipamento/${id}`} className="mr-2">
-  <IconButton color="primary">
-        <FaEdit size="0.8em" className="mr-2" /> 
+  <Link to={`/emissao/${id}`} className="mr-2">
+  <IconButton color="secondary">
+        <FaFilePowerpoint size="0.8em" className="mr-2" /> 
   </IconButton>
   </Link>
 );  
+
+
+
 
 
 const useStyles = makeStyles({
@@ -85,7 +95,7 @@ const Entregas = (props) =>{
     const [isLoadingMore,setIsLoadingMore] = React.useState(true);
 
 
-
+   
     const [amount, setAmount] = React.useState('');
   
     const dispatch = useDispatch();
@@ -113,6 +123,32 @@ const Entregas = (props) =>{
         })
     }
    
+
+
+    const _mudastatus = (id,status) => (
+        <>
+        
+       {(status =="A")?
+         <>
+        <IconButton  style={{color:'#3CB371'}} onClick={()=>dispatch(mudastatus(id,pessoa_id))}>
+         <FaThumbsUp size="0.8em" className="mr-2" /> 
+        </IconButton>
+      
+        </>
+      
+        :
+        <>
+        <IconButton style={{color:'#ccc'}} onClick={()=>dispatch(mudastatus(id,pessoa_id))}>
+         <FaThumbsDown size="0.8em" className="mr-2" /> 
+        </IconButton>
+     
+        </>
+       
+     }
+      
+        </>
+     ); 
+
    //MONTA TABELA
    
 
@@ -182,7 +218,7 @@ const Entregas = (props) =>{
                                             quantidade:row.quantidade,
                                             beneficio:row.beneficio.nome,
                                             editar:editIcon(row.id),
-                                        
+                                            status:_mudastatus(row.id,row.status),
                                             
                                     }
                                    
