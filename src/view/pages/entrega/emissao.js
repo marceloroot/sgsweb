@@ -57,9 +57,9 @@ export class ComponentToPrint extends React.PureComponent {
 
      
       return (
-     <div className="container">
-        <div className="row">
-         <div className="col-md-12">
+     <div className="container-fluid " >
+        <div className="row ">
+         <div className="col-md-12  overflow-auto">
                <div className="d-flex justify-content-center align-center mt-3">
                 <img className="align-center mr-2" style={{width: '2.5em',marginRight:"1rem"}} src="http://pregao.alfenas.mg.gov.br/Arquivo/mg-alfenas-brasao.png" alt="logo" />
                 <h3 className="text-center" style={{fontSize: '1.3rem'}}>PREFEITURA MUNICIPAL DE ALFENAS</h3>

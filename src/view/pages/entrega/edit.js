@@ -107,7 +107,7 @@ const Entrega = (props) =>{
        
         <div className="container-fluid h-100 ">
             <div className="row h-100">
-            {(data.success) && <Redirect to={`/beneficios`} />}
+            {(data.success) && <Redirect to={`/entregas/${pessoa_id}`} />}
               <Header />
               <Sidebar />
               <div className="col p-5 overflow-auto h-100">
