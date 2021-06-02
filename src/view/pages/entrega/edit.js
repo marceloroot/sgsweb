@@ -57,8 +57,9 @@ const Entrega = (props) =>{
    
     React.useEffect(()=>{
         return () =>{
+          
              dispatch(indexResponse({success:false}))
-           
+            
         }
         
 
@@ -107,6 +108,7 @@ const Entrega = (props) =>{
        
         <div className="container-fluid h-100 ">
             <div className="row h-100">
+                {console.log(data)}
             {(data.success) && <Redirect to={`/entregas/${pessoa_id}`} />}
               <Header />
               <Sidebar />

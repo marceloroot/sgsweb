@@ -73,7 +73,7 @@ export const store = (data,pessoaid) => dispatch =>{
         else if(res.status === 201){
              dispatch(success(true));
              dispatch(changeNotify({open:true,msg:res.data.msg}));
-            
+             window.open(`/emissao/${res.data.data.id}`, '_blank');
          }
         }
    })
