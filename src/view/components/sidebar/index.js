@@ -10,15 +10,17 @@ import { FaCalendarCheck, FaHandHoldingUsd, FaHotel, FaUserCheck } from 'react-i
 import logo from '../../../assets/logo.png'
 import {FaUsers,FaPaste,FaLaptop,FaWhatsapp,FaSignOutAlt,FaAngleUp,FaAngleDown} from 'react-icons/fa';
 import { MenuItem ,MenuList,AppBar,Toolbar,IconButton,Typography,Drawer,
-         Divider,List,ListItem,ListItemText,ListItemIcon,Collapse } from '@material-ui/core';
+         Divider,List,ListItem,ListItemText,ListItemIcon,Collapse, CircularProgress } from '@material-ui/core';
 import { MdMenu }from 'react-icons/md';
 
 import {deslogar} from '../../../store/actions/auth.action';
+
+import {usuariologado} from '../../../store/actions/auth.action'
 import {useSelector,useDispatch} from 'react-redux'
 
 const Sidebar = (props) =>{
   const dispatch = useDispatch();
-
+  const [isLoading,setIsLoading] = React.useState(true);
   const [state,setSatate] = React.useState({
     open:false
   });
@@ -26,9 +28,20 @@ const Sidebar = (props) =>{
   const [collapse,setCollapse] = React.useState({
         relatorio:false
   });
+
+  const data = useSelector(state =>state.authReducers);
+
+  React.useEffect(()=>{
+       dispatch(usuariologado()).then(res =>{
+        setIsLoading(false);
+       })
+  },[])
   
     return (
+      <>
+        {(isLoading) ? <div className="d-flex justify-content-center mt-5 pt-5"><CircularProgress/></div> :
         <>
+       
          {(window.innerWidth < 577) ? 
             <AppBar position="fixed">
             <Toolbar>
@@ -42,8 +55,9 @@ const Sidebar = (props) =>{
             </Toolbar>
           </AppBar>
            :
-           <sidebar className="col-2 h-100">
+           <sidebar className="col-2 h-100" style={{height:"100%"}}>
            <img src={logo} className="img-fluid" />
+           <h6 style={{textTransform: "uppercase"}}>{data.usuario.nome.split(" ")[0]}</h6>
            <ul className="p-0 m-0"> 
                <li>
                    <Link to="/usuarios" className={props.location.pathname === '/Equipamento' ? 'active' :''}>
@@ -86,27 +100,55 @@ const Sidebar = (props) =>{
                      <img className="img-fluid logo-mobile" src={logo} alt="LOGO" />
                      </ListItem>
                      
-                     <ListItem>
-                        teste@gmail.com
+                     <ListItem style={{textTransform: "uppercase"}}>
+                     {data.usuario.nome.split(" ")[0]}
                      </ListItem>
 
                      <Divider className="mt-2 mb-3" />
                      
                      <ListItem>
-                       <Link to="/biddings" style={{display:'flex'}}>
+                       <Link to="/usuarios"style={{display:'flex'}}>
                         <ListItemIcon>
                         <FaPaste /> 
                         </ListItemIcon>
-                        <ListItemText primary="Licitacões"/>
+                        <ListItemText primary="Operador"/>
                         </Link>
                      </ListItem>
 
                      <ListItem>
-                       <Link to="/register" style={{display:'flex'}}>
+                       <Link to="/familias" style={{display:'flex'}}>
                         <ListItemIcon>
                         <FaPaste /> 
                         </ListItemIcon>
-                        <ListItemText primary="Usuario"/>
+                        <ListItemText primary="Familia"/>
+                        </Link>
+                     </ListItem>
+
+                     <ListItem>
+                       <Link to="/equipamentos" style={{display:'flex'}}>
+                        <ListItemIcon>
+                        <FaPaste /> 
+                        </ListItemIcon>
+                        <ListItemText primary="Entidade"/>
+                        </Link>
+                     </ListItem>
+
+                     
+                     <ListItem>
+                       <Link to="/beneficios" style={{display:'flex'}}>
+                        <ListItemIcon>
+                        <FaPaste /> 
+                        </ListItemIcon>
+                        <ListItemText primary="Beneficio"/>
+                        </Link>
+                     </ListItem>
+
+                     <ListItem>
+                       <Link to="/familias" style={{display:'flex'}}>
+                        <ListItemIcon>
+                        <FaPaste /> 
+                        </ListItemIcon>
+                        <ListItemText primary="Atendimento"/>
                         </Link>
                      </ListItem>
 
@@ -157,6 +199,8 @@ const Sidebar = (props) =>{
              </div>
          </Drawer>
         </>
+       }
+     </>
     )
 }
 export default withRouter(Sidebar);

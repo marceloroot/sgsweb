@@ -59,9 +59,14 @@ header small {
 
 sidebar{
     background-color: var(--gray);
+    
   
 }
 sidebar img{
+    padding: 2em 4em;
+}
+
+sidebar h6{
     padding: 2em 4em;
 }
 

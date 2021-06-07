@@ -6,6 +6,7 @@ export const actionTypes = {
     CHANGE: 'AUTH_CHANGE',
     SUCCESS: 'AUTH_SUCCESS',
     INDEX:'AUTH_INDEX',
+    SHOW:'AUTH_SHOW',
 }
 
 export const change = (payload) => ({
@@ -17,6 +18,19 @@ export const success = (payload) => ({
     type: actionTypes.SUCCESS,
     payload
 })
+
+
+export const showResponse =(payload) => ({
+    type: actionTypes.SHOW,
+    payload,
+})
+
+
+export const  usuariologado = () =>dispatch =>{
+    return HttpAuth.get('/usuario/decoude/')
+    .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+}
+
 
 export const setUserToken = token => dispatch =>{
 
@@ -91,4 +105,5 @@ export  const deslogar= () => dispatch=>{
     localStorage.removeItem('sgs_token');
     window.location.replace('/login');
 }
+
 

@@ -5,7 +5,7 @@ import moment from 'moment'
 import { useReactToPrint } from 'react-to-print';
 import {useDispatch,useSelector} from 'react-redux';
 import {show} from '../../../store/actions/entrega.action'
-
+import logo from '../../../assets/logo.png'
 
 export class ComponentToPrint extends React.PureComponent {
     
@@ -61,7 +61,7 @@ export class ComponentToPrint extends React.PureComponent {
         <div className="row ">
          <div className="col-md-12  overflow-auto">
                <div className="d-flex justify-content-center align-center mt-3">
-                <img className="align-center mr-2" style={{width: '2.5em',marginRight:"1rem"}} src="http://pregao.alfenas.mg.gov.br/Arquivo/mg-alfenas-brasao.png" alt="logo" />
+                <img className="align-center mr-2" style={{width: '2.5em',marginRight:"1rem"}} src={logo} alt="logo" />
                 <h3 className="text-center" style={{fontSize: '1.3rem'}}>PREFEITURA MUNICIPAL DE ALFENAS</h3>
               </div>
           </div>

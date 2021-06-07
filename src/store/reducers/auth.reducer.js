@@ -6,6 +6,7 @@ const initialState = {
     password:''
   },
   success: false,
+  usuario:{}
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -26,10 +27,11 @@ export default (state = initialState, { type, payload }) => {
               success: payload
             }
 
-            case actionTypes.INDEX:
-            
-      
-              return { ...state, ...payload }
+       case actionTypes.INDEX:
+        return { ...state, ...payload }
+
+       case actionTypes.SHOW:
+        return { ...state, ...payload }
 
     default:
         return state
