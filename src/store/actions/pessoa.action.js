@@ -12,7 +12,7 @@ export const actionTypes  = {
     SUCCESS:"PESSOA_SUCCESS",
     SHOW:'PESSOA_SHOW',
     SHOWRESPONSAVEL:'PESSOA_SHOWRESPONSAVEL',
-    
+    CLEAR:'PESSOA_CLEAR',
 }
 
 
@@ -47,6 +47,13 @@ export const showResponseResponsavel =(payload) => ({
     payload,
 })
 
+export const clearResponsavel =() => ({
+    type: actionTypes.CLEAR,
+    
+})
+
+
+
 
 export const index = (id) => dispatch => {
     if(id){
@@ -63,6 +70,12 @@ export const show = (id) => dispatch => {
    
     return HttpAuth.get('/pessoa/'+id)
     .then(res => typeof res !== 'undefined' && dispatch(showResponse(res.data)))
+    
+}
+
+export const clear = () => dispatch => {
+   
+  dispatch(clearResponsavel())
     
 }
 

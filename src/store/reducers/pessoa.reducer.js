@@ -39,6 +39,14 @@ export default (state = initialState, { type, payload }) => {
                  ...payload
              }
         }
+        case actionTypes.CLEAR:
+        return{ 
+            ...state,
+            pessoa:{
+               
+                
+            }
+        }
     case actionTypes.SUCCESS:
         return{ 
             ...state, 

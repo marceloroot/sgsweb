@@ -1,3 +1,3 @@
-export const rootUrl = 'http://localhost:8000/';
-export const apiUrl = 'http://localhost:8000/';
+export const rootUrl = 'https://teste.alfenas.mg.gov.br/';
+export const apiUrl = 'https://teste.alfenas.mg.gov.br/';
 export const SCROLL =200;
