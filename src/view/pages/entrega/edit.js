@@ -71,8 +71,17 @@ const Entrega = (props) =>{
         dispatch(showResponsavel(pessoa_id)).then(res =>{
             
             if(res.payload.pessoa){
+                console.log(res.payload.pessoa)
+                if(res.payload.pessoa.status != "A"){
+                    alert("Familia Inativa")
+                    window.location.replace('/familias');
+                }
+                if(res.payload.pessoa.chefe != "S"){
+                    alert("Não é Responsavel pela familia")
+                    window.location.replace('/familias');
+                }
                 if(entrega_id){
-           
+                
                     dispatch(show(entrega_id)).then(res =>{
                         if(res){
                             if(res.payload.beneficio === null) {
@@ -108,7 +117,7 @@ const Entrega = (props) =>{
        
         <div className="container-fluid h-100 ">
             <div className="row h-100">
-                {console.log(data)}
+        
             {(data.success) && <Redirect to={`/entregas/${pessoa_id}`} />}
               <Header />
               <Sidebar />

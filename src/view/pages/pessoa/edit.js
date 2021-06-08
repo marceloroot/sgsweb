@@ -74,7 +74,30 @@ const Pessoa = (props) =>{
     React.useEffect(()=>{
         return () =>{
              dispatch(indexResponse({success:false}))
-           
+             dispatch(change({cep:' '}))
+             dispatch(change({bairro:' '}))
+             dispatch(change({logradouro:' '}))
+             dispatch(change({numero:' '}))
+             dispatch(change({localidade:' '}))
+             dispatch(change({uf:' '}))
+             dispatch(change({nome:' '}))
+             dispatch(change({cpf:' '}))
+             dispatch(change({sexo:' '}))
+             dispatch(change({datanascimento:' '}))
+             dispatch(change({rg:' '}))
+             dispatch(change({telefone:' '}))
+             dispatch(change({escolaridade:' '}))
+             dispatch(change({estadocivil:' '}))
+             dispatch(change({parentesco:' '}))
+             dispatch(change({renda:' '}))
+             dispatch(change({ctpsassinada:' '}))
+             dispatch(change({ppcl:' '}))
+             dispatch(change({observacao:' '}))
+             dispatch(change({observacaorestrita:' '}))
+             dispatch(change({familiares:' '}))
+             dispatch(change({beneficios:' '}))
+             
+       
         }
         
 
